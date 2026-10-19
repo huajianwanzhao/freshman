@@ -25,6 +25,11 @@ function md(s){var d=fromISO(s);return (d.getMonth()+1)+'/'+d.getDate();}
 function esc(s){return String(s==null?'':s).replace(/[&<>"]/g,function(c){return ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'})[c];});}
 function tint(hex){return hex+'22';}
 
+/* ── 美术计划 ── */
+var ART = D.artPlan || [];
+function artGet(date){ var a=ART; for(var i=0;i<a.length;i++){ if(a[i][0]===date) return a[i]; } return null; }
+function ckFor(day, key){ var s=migrate(); return !!(s.ck && s.ck[day] && s.ck[day][key]); }
+
 function inWeeks(weeks, w){
   if(!weeks || !weeks.length) return false;
   if(weeks.length===2 && typeof weeks[0]==='number' && weeks[0]<weeks[1]) return w>=weeks[0] && w<=weeks[1];
@@ -145,6 +150,17 @@ function vToday(){
   h.push('</div>');
 
   if(!blks.length) h.push('<div class="card muted">这一天没有安排。空档当自习用。</div>');
+
+  var ae = artGet(date);
+  if(ae){
+    var da = ckFor(date,'art');
+    h.push('<div class="artcard'+(da?' done':'')+'">'
+      + '<div class="ah"><b>今天画什么</b><span class="d">'+ae[1]+' · '+ae[3]+' 分钟</span></div>'
+      + '<div class="at">'+esc(ae[2])+'</div>'
+      + '<ol class="as">'+ae[4].map(function(x){return '<li>'+esc(x)+'</li>';}).join('')+'</ol>'
+      + '<div class="ac">检查：'+esc(ae[5])+'</div>'
+      + '<label class="adone"><input type="checkbox" data-ck="art" data-day="'+date+'"'+(da?' checked':'')+'>画完了，打勾</label></div>');
+  }
 
   var st = migrate();
   var ck = (st.ck && st.ck[date]) || {};
@@ -271,6 +287,32 @@ function vList(){
 }
 
 /* ── 抽屉 ── */
+/* ── 美术 90 天 ── */
+function vArt(){
+  var h = [], total = ART.length, done = 0;
+  ART.forEach(function(e){ if(ckFor(e[0],'art')) done++; });
+  var cur = artGet(todayISO());
+  h.push('<div class="card"><b>美术 90 天 · 已完成 '+done+' / '+total+' 天</b><br>'
+    + '<div class="muted">每天 15–30 分钟。这里的勾和「今日」页是同一份数据，打一次两边都算。'
+    + (cur?' 今天 '+cur[1]+'：'+esc(cur[2])+'。':'')+'</div></div>');
+  var byW = {}, order = [];
+  ART.forEach(function(e){ var w = mondayOf(e[0]); if(!byW[w]){byW[w]=[];order.push(w);} byW[w].push(e); });
+  order.forEach(function(w){
+    h.push('<div class="agrp">'+md(w)+' 那周<span>第 '+weekOf(w)+' 周</span></div>');
+    byW[w].forEach(function(e){
+      var d = ckFor(e[0],'art');
+      h.push('<div class="arow'+(d?' done':'')+(e[0]===todayISO()?' now':'')+'">'
+        + '<label class="adone"><input type="checkbox" data-ck="art" data-day="'+e[0]+'"'+(d?' checked':'')+'></label>'
+        + '<span class="dt">'+md(e[0])+'</span>'
+        + '<span class="dn">'+e[1]+'</span>'
+        + '<span class="tt">'+esc(e[2])+'</span>'
+        + '<span class="mm">'+e[3]+'′</span></div>');
+    });
+  });
+  if(D.artLater) h.push('<div class="card muted">'+esc(D.artLater)+'</div>');
+  return h.join('');
+}
+
 function openDrawer(key){
   var b = REG[key];
   if(!b) return;
@@ -290,7 +332,7 @@ function openDrawer(key){
 
 /* ── 主渲染 ── */
 function render(){
-  var v = {today:vToday, week:vWeek, gantt:vGantt, list:vList}[state.view];
+  var v = {today:vToday, week:vWeek, gantt:vGantt, list:vList, art:vArt}[state.view];
   document.getElementById('main').innerHTML = v();
   head(); legend();
   var tabs = document.querySelectorAll('.tab');
@@ -330,11 +372,13 @@ document.getElementById('dx').addEventListener('click', function(){ document.get
 document.addEventListener('change', function(e){
   var t = e.target;
   if(t.dataset && t.dataset.ck){
+    var day = t.dataset.day || state.date;
     var s = migrate();
-    s.ck = s.ck || {}; s.ck[state.date] = s.ck[state.date] || {};
-    if(t.checked) s.ck[state.date][t.dataset.ck] = 1; else delete s.ck[state.date][t.dataset.ck];
+    s.ck = s.ck || {}; s.ck[day] = s.ck[day] || {};
+    if(t.checked) s.ck[day][t.dataset.ck] = 1; else delete s.ck[day][t.dataset.ck];
     save(s);
-    var n = CK.filter(function(c){return s.ck[state.date][c[0]];}).length;
+    if(t.dataset.day){ render(); return; }
+    var n = CK.filter(function(c){return s.ck[day][c[0]];}).length;
     var el = document.getElementById('ckSum');
     if(el) el.textContent = '已勾 '+n+' / 6';
     return;
@@ -353,6 +397,7 @@ document.addEventListener('keydown', function(e){
   if(e.key==='2'){ state.view='week'; render(); }
   if(e.key==='3'){ state.view='gantt'; render(); }
   if(e.key==='4'){ state.view='list'; render(); }
+  if(e.key==='5'){ state.view='art'; render(); }
   if(e.key==='t'||e.key==='T'){ state.date=todayISO(); render(); }
   if(e.key==='ArrowLeft'){ document.getElementById('prev').click(); }
   if(e.key==='ArrowRight'){ document.getElementById('next').click(); }
@@ -362,7 +407,7 @@ function initFromHash(){
   var h = (location.hash||'').replace(/^#\/?/,'');
   if(!h) return;
   var p = h.split('/');
-  if(['today','week','gantt','list'].indexOf(p[0])>=0) state.view = p[0];
+  if(['today','week','gantt','list','art'].indexOf(p[0])>=0) state.view = p[0];
   if(p[1] && /^\d{4}-\d{2}-\d{2}$/.test(p[1])) state.date = p[1];
 }
 
