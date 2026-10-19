@@ -1,0 +1,52 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#faf9f5">
+<title>日程台 · 2026 秋</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <h1>日程台</h1>
+    <span class="week" id="weekLabel"></span>
+    <div class="nav">
+      <button id="prev" title="前一天（←）">‹</button>
+      <span class="date" id="dateLabel"></span>
+      <button id="next" title="后一天（→）">›</button>
+      <button class="today" id="todayBtn" title="回到今天（T）">今天</button>
+    </div>
+  </header>
+
+  <nav class="tabs" id="tabs">
+    <button class="tab on" data-v="today">今日</button>
+    <button class="tab" data-v="week">周表</button>
+    <button class="tab" data-v="gantt">甘特</button>
+    <button class="tab" data-v="list">清单</button>
+  </nav>
+
+  <div class="tools">
+    <div class="legend" id="legend"></div>
+    <span class="jamsw" id="jamSw">Jam 模式：自动</span>
+    <button class="lg" id="printBtn">打印</button>
+  </div>
+
+  <main id="main"></main>
+
+  <div class="foot">
+    改 data.js 一处，四个视图一起变 · 打卡存在本机浏览器（换设备不同步）<br>
+    快捷键：1 今日 / 2 周表 / 3 甘特 / 4 清单 / T 今天 / ← → 前后一天
+  </div>
+</div>
+
+<div class="drawer" id="drawer">
+  <button class="x" id="dx" title="关闭">×</button>
+  <div id="dbody"></div>
+</div>
+
+<script src="data.js"></script>
+<script src="app.js"></script>
+</body>
+</html>
