@@ -29,6 +29,8 @@ function tint(hex){return hex+'22';}
 var ART = D.artPlan || [];
 function artGet(date){ var a=ART; for(var i=0;i<a.length;i++){ if(a[i][0]===date) return a[i]; } return null; }
 function ckFor(day, key){ var s=migrate(); return !!(s.ck && s.ck[day] && s.ck[day][key]); }
+var GOD = D.godotPlan || [];
+function godotGet(date){ var a=GOD; for(var i=0;i<a.length;i++){ if(a[i][0]===date) return a[i]; } return null; }
 
 function inWeeks(weeks, w){
   if(!weeks || !weeks.length) return false;
@@ -44,6 +46,7 @@ function isJam(date){
   if(state.jamForce!==null) return state.jamForce;
   return date>='2026-10-28' && date<='2026-11-11';
 }
+function inRange(d, spec){ var p=String(spec).split('..'); return d>=p[0] && d<=(p[1]||p[0]); }
 function overlap(a,b){return toMin(a.start)<toMin(b.end) && toMin(b.start)<toMin(a.end);}
 
 function blocksFor(date){
@@ -55,6 +58,8 @@ function blocksFor(date){
   });
   D.routines.forEach(function(r){
     if(r.days && r.days.indexOf(wd)<0) return;
+    if(r.onDates && !inRange(date, r.onDates)) return;
+    if(r.notDates && inRange(date, r.notDates)) return;
     if(jam && r.noJam) return;
     if(r.jamOnly && !jam) return;
     var b = r;
@@ -160,6 +165,17 @@ function vToday(){
       + '<ol class="as">'+ae[4].map(function(x){return '<li>'+esc(x)+'</li>';}).join('')+'</ol>'
       + '<div class="ac">检查：'+esc(ae[5])+'</div>'
       + '<label class="adone"><input type="checkbox" data-ck="art" data-day="'+date+'"'+(da?' checked':'')+'>画完了，打勾</label></div>');
+  }
+
+  var ge = godotGet(date);
+  if(ge){
+    var dg = ckFor(date,'jam');
+    h.push('<div class="artcard gd'+(dg?' done':'')+'">'
+      + '<div class="ah"><b>今晚 Godot 写什么</b><span class="d">'+ge[1]+' · '+ge[3]+' 分钟</span></div>'
+      + '<div class="at">'+esc(ge[2])+'</div>'
+      + '<ol class="as">'+ge[4].map(function(x){return '<li>'+esc(x)+'</li>';}).join('')+'</ol>'
+      + '<div class="ac">今天算过：'+esc(ge[5])+'</div>'
+      + '<label class="adone"><input type="checkbox" data-ck="jam" data-day="'+date+'"'+(dg?' checked':'')+'>做完了，打勾</label></div>');
   }
 
   var st = migrate();
@@ -313,6 +329,32 @@ function vArt(){
   return h.join('');
 }
 
+/* ── Godot 24 天 ── */
+function vGodot(){
+  var h = [], total = GOD.length, done = 0;
+  GOD.forEach(function(e){ if(ckFor(e[0],'jam')) done++; });
+  var cur = godotGet(todayISO());
+  h.push('<div class="card"><b>Godot 备赛 + Jam · 已完成 '+done+' / '+total+' 天</b><br>'
+    + '<div class="muted">10/19–10/27 每天 1 小时备赛；10/28–11/11 每天 75 分钟做 Jam。勾的是打卡里的「Jam 有推进」。'
+    + (cur?' 今天 '+cur[1]+'：'+esc(cur[2])+'。':'')+'</div></div>');
+  var byW = {}, order = [];
+  GOD.forEach(function(e){ var w = mondayOf(e[0]); if(!byW[w]){byW[w]=[];order.push(w);} byW[w].push(e); });
+  order.forEach(function(w){
+    h.push('<div class="agrp">'+md(w)+' 那周<span>第 '+weekOf(w)+' 周</span></div>');
+    byW[w].forEach(function(e){
+      var d = ckFor(e[0],'jam');
+      h.push('<div class="arow'+(d?' done':'')+(e[0]===todayISO()?' now':'')+'">'
+        + '<label class="adone"><input type="checkbox" data-ck="jam" data-day="'+e[0]+'"'+(d?' checked':'')+'></label>'
+        + '<span class="dt">'+md(e[0])+'</span>'
+        + '<span class="dn">'+e[1]+'</span>'
+        + '<span class="tt">'+esc(e[2])+'</span>'
+        + '<span class="mm">'+e[3]+'′</span></div>');
+    });
+  });
+  if(D.godotLater) h.push('<div class="card muted">'+esc(D.godotLater)+'</div>');
+  return h.join('');
+}
+
 function openDrawer(key){
   var b = REG[key];
   if(!b) return;
@@ -332,7 +374,7 @@ function openDrawer(key){
 
 /* ── 主渲染 ── */
 function render(){
-  var v = {today:vToday, week:vWeek, gantt:vGantt, list:vList, art:vArt}[state.view];
+  var v = {today:vToday, week:vWeek, gantt:vGantt, list:vList, art:vArt, godot:vGodot}[state.view];
   document.getElementById('main').innerHTML = v();
   head(); legend();
   var tabs = document.querySelectorAll('.tab');
@@ -398,6 +440,7 @@ document.addEventListener('keydown', function(e){
   if(e.key==='3'){ state.view='gantt'; render(); }
   if(e.key==='4'){ state.view='list'; render(); }
   if(e.key==='5'){ state.view='art'; render(); }
+  if(e.key==='6'){ state.view='godot'; render(); }
   if(e.key==='t'||e.key==='T'){ state.date=todayISO(); render(); }
   if(e.key==='ArrowLeft'){ document.getElementById('prev').click(); }
   if(e.key==='ArrowRight'){ document.getElementById('next').click(); }
@@ -407,7 +450,7 @@ function initFromHash(){
   var h = (location.hash||'').replace(/^#\/?/,'');
   if(!h) return;
   var p = h.split('/');
-  if(['today','week','gantt','list','art'].indexOf(p[0])>=0) state.view = p[0];
+  if(['today','week','gantt','list','art','godot'].indexOf(p[0])>=0) state.view = p[0];
   if(p[1] && /^\d{4}-\d{2}-\d{2}$/.test(p[1])) state.date = p[1];
 }
 
