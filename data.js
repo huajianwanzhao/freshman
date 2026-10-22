@@ -44,7 +44,7 @@ window.DATA = {
 
     { id:"r10", name:"画画 30 分钟", start:"21:30", end:"22:00", color:"art",
       note:"具体画什么，看下面「今天画什么」",
-      jam:{ name:"Jam：写 Godot", start:"21:30", end:"22:45" } },
+      jam:{ name:"Jam：写 Godot", start:"21:30", end:"22:45", note:"只改一块东西，跑一次；22:45 停手" } },
     { id:"g01", name:"Godot 备赛 50 分钟", start:"22:00", end:"22:50", color:"jam", onDates:"2026-10-19..2026-10-27",
       note:"22:50 收笔，剩下 10 分钟留给打卡" },
     { id:"r11", name:"自由：游戏 / 刷手机", start:"22:00", end:"23:00", color:"life", noJam:true,

@@ -63,7 +63,7 @@ function blocksFor(date){
     if(jam && r.noJam) return;
     if(r.jamOnly && !jam) return;
     var b = r;
-    if(jam && r.jam) b = {id:r.id+'-jam',name:r.jam.name||r.name,start:r.jam.start||r.start,end:r.jam.end||r.end,color:r.jam.color||r.color,place:r.place,note:r.note,src:'日常'};
+    if(jam && r.jam) b = {id:r.id+'-jam',name:r.jam.name||r.name,start:r.jam.start||r.start,end:r.jam.end||r.end,color:r.jam.color||r.color,place:r.place,note:(r.jam.note!==undefined?r.jam.note:r.note),src:'日常'};
     else b = {id:r.id,name:r.name,start:r.start,end:r.end,color:r.color,place:r.place,note:r.note,src:r.jamOnly?'Jam':'日常'};
     for(var i=0;i<out.length;i++){ if(out[i].color!=='course' && overlap(out[i],b)) return; if(out[i].color==='course' && overlap(out[i],b)) return; }
     out.push(b);
