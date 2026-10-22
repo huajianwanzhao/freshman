@@ -29,7 +29,10 @@ window.DATA = {
 
   /* ── 每日模板：days 省略=每天；jam=Jam 期间替换；jamOnly=只在 Jam 期间；noJam=Jam 期间消失 ── */
   routines: [
-    { id:"r01", name:"起床，洗漱", start:"07:00", end:"07:20", color:"life", note:"闹钟只设一个，不按第二次" },
+    { id:"m01", name:"起床（跑步日）", start:"06:20", end:"06:35", color:"life", days:[2,4,6], note:"闹钟只设一个；起来就穿鞋，别坐下" },
+    { id:"m02", name:"晨跑 20 分钟", start:"06:35", end:"06:55", color:"sport", days:[2,4,6], note:"跑完走 3 分钟再拉伸，回家洗澡" },
+
+    { id:"r01", name:"起床，洗漱", start:"07:00", end:"07:20", color:"life", days:[1,3,5,7], note:"闹钟只设一个，不按第二次" },
     { id:"r02", name:"早饭", start:"07:20", end:"07:50", color:"life" },
     { id:"r03", name:"空档：昨天的作业 + 预习", start:"08:00", end:"09:35", color:"study", days:[1,2,3,4,5], note:"没课的日子这块最值钱" },
 
@@ -37,22 +40,31 @@ window.DATA = {
     { id:"r05", name:"午睡 20–30 分钟", start:"12:20", end:"12:50", color:"life" },
     { id:"r06", name:"自习：作业当天清", start:"15:55", end:"17:30", color:"study", days:[1,2,3,4,5] },
 
-    { id:"r07", name:"走 20 分钟（当天的运动）", start:"17:30", end:"17:50", color:"sport" },
+    { id:"r07", name:"走 20 分钟", start:"17:30", end:"17:50", color:"sport", days:[1,3,5,7], note:"跑步日早上已跑，这段空出来" },
     { id:"r08", name:"晚饭", start:"17:50", end:"18:20", color:"life" },
 
     { id:"r09", name:"主战场：自习（数分 / 高代 / 程设）", start:"19:00", end:"21:30", color:"study", days:[1,2,3,4,5], note:"最难的一门放脑子最清醒的时候" },
 
-    { id:"r10", name:"画画 30 分钟", start:"21:30", end:"22:00", color:"art",
+    { id:"r10", name:"画画 30 分钟", start:"21:30", end:"22:00", color:"art", days:[1,3,5,7],
       note:"具体画什么，看下面「今天画什么」",
       jam:{ name:"Jam：写 Godot", start:"21:30", end:"22:45", note:"只改一块东西，跑一次；22:45 停手" } },
-    { id:"g01", name:"Godot 备赛 50 分钟", start:"22:00", end:"22:50", color:"jam", onDates:"2026-10-19..2026-10-27",
+    { id:"r10r", name:"画画 30 分钟（跑步日）", start:"21:30", end:"22:00", color:"art", days:[2,4,6],
+      note:"具体画什么，看下面「今天画什么」",
+      jam:{ name:"Jam：写 Godot", start:"21:30", end:"22:25", note:"跑步日只写 25 分钟，22:25 收笔去睡" } },
+    { id:"g01", name:"Godot 备赛 50 分钟", start:"22:00", end:"22:50", color:"jam", onDates:"2026-10-19..2026-10-27", days:[1,3,5,7],
       note:"22:50 收笔，剩下 10 分钟留给打卡" },
-    { id:"r11", name:"自由：游戏 / 刷手机", start:"22:00", end:"23:00", color:"life", noJam:true,
+    { id:"g01r", name:"Godot 备赛 25 分钟（跑步日）", start:"22:00", end:"22:25", color:"jam", onDates:"2026-10-19..2026-10-27", days:[2,4,6],
+      note:"跑步日只写 25 分钟，22:25 收笔去睡" },
+    { id:"r11", name:"自由：游戏 / 刷手机", start:"22:00", end:"23:00", color:"life", noJam:true, days:[1,3,5,7],
       notDates:"2026-10-19..2026-10-27", note:"这是允许的娱乐，不内疚" },
-    { id:"r12", name:"排线 15 分钟（Jam 期间别断）", start:"22:45", end:"23:00", color:"art", jamOnly:true },
+    { id:"r12", name:"排线 15 分钟（Jam 期间别断）", start:"22:45", end:"23:00", color:"art", jamOnly:true, days:[1,3,5,7] },
 
-    { id:"r13", name:"打卡 + 拉伸 5 分钟 + 洗漱", start:"23:00", end:"23:20", color:"life", note:"坐位体前屈全靠这 5 分钟" },
-    { id:"r14", name:"上床，手机放桌上充电", start:"23:30", end:"23:59", color:"life" },
+    { id:"m03", name:"自由（跑步日，早点收）", start:"22:00", end:"22:30", color:"life", days:[2,4,6], notDates:"2026-10-19..2026-11-11", note:"明天 06:20 起，今晚不熬" },
+    { id:"m04", name:"打卡 + 拉伸 5 分钟 + 洗漱（跑步日）", start:"22:30", end:"22:40", color:"life", days:[2,4,6], note:"拉伸就是坐位体前屈那 5 分钟" },
+    { id:"m05", name:"上床（跑步日）", start:"22:40", end:"23:10", color:"life", days:[2,4,6], note:"手机放桌上充电；明早 06:20 起" },
+
+    { id:"r13", name:"打卡 + 拉伸 5 分钟 + 洗漱", start:"23:00", end:"23:20", color:"life", days:[1,3,5,7], note:"坐位体前屈全靠这 5 分钟" },
+    { id:"r14", name:"上床，手机放桌上充电", start:"23:30", end:"23:59", color:"life", days:[1,3,5,7] },
 
     { id:"w01", name:"补作业 + 一周复盘", start:"09:00", end:"11:30", color:"study", days:[6] },
     { id:"w02", name:"美术长块 2.5 小时", start:"14:00", end:"16:30", color:"art", days:[6], note:"一周唯一的长块，画完整的一张" },
