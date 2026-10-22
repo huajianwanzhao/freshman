@@ -51,7 +51,7 @@ window.DATA = {
       notDates:"2026-10-19..2026-10-27", note:"这是允许的娱乐，不内疚" },
     { id:"r12", name:"排线 15 分钟（Jam 期间别断）", start:"22:45", end:"23:00", color:"art", jamOnly:true },
 
-    { id:"r13", name:"打卡 + 洗漱", start:"23:00", end:"23:20", color:"life" },
+    { id:"r13", name:"打卡 + 拉伸 5 分钟 + 洗漱", start:"23:00", end:"23:20", color:"life", note:"坐位体前屈全靠这 5 分钟" },
     { id:"r14", name:"上床，手机放桌上充电", start:"23:30", end:"23:59", color:"life" },
 
     { id:"w01", name:"补作业 + 一周复盘", start:"09:00", end:"11:30", color:"study", days:[6] },
@@ -78,7 +78,8 @@ window.DATA = {
     { id:"t07", name:"美术 90 天", startDate:"2026-10-19", endDate:"2027-01-16", color:"art", note:"每天 15–30 分钟，不断" },
     { id:"t08", name:"英语四级", startDate:"2026-12-19", endDate:"2026-12-19", color:"fixed", note:"以官方通知为准" },
     { id:"t09", name:"期末周", startDate:"2027-01-11", endDate:"2027-01-17", color:"fixed", note:"占位，等教务通知" },
-    { id:"t12", name:"跑步 4 周", startDate:"2026-10-22", endDate:"2026-11-19", color:"sport", note:"每周 3 次 20 分钟：降速加时长，1km 6'30\" → 目标 5'40\"" }
+    { id:"t12", name:"跑步 4 周", startDate:"2026-10-22", endDate:"2026-11-19", color:"sport", note:"每周 3 次 20 分钟：降速加时长，1km 6'30\" → 目标 5'40\"" },
+    { id:"t13", name:"体测（11/2–11/8 那周）", startDate:"2026-11-02", endDate:"2026-11-08", color:"fixed", hard:true, note:"具体哪天等通知；那天 Jam 停手" }
   ],
 
   /* ── 美术 90 天：每天到底画什么（date, 序号, 标题, 分钟, 步骤[], 检查点） ── */
@@ -567,7 +568,5 @@ window.DATA = {
   artLater: "12/13 之后按周主题推进（人体动态 → 手脚 → 构图 → 上色入门），到时候我按你的实际进度填进这张表。",
 
   /* ── 一次性节点（不在甘特行里，但会出现在清单/学期轴） ── */
-  events: [
-    { id:"e01", name:"体测", pending:true, color:"fixed", note:"日期待定，老师通知后把 pending 改成 startDate/endDate" }
-  ]
+  events: []
 };
