@@ -246,10 +246,18 @@ function vGantt(){
     if(w+l>100){ w=100-l; clipR=true; }
     if(w<=0) return;
     REG['g|'+t.id] = {id:t.id,name:t.name,start:t.startDate,end:t.endDate,color:t.color,note:t.note,src:'任务'};
+    var lab = esc(t.note||'');
+    var inBar = w >= 9;
+    var out = '';
+    if(!inBar && lab){
+      var toLeft = (l + w) > 82;
+      out = '<span class="gtout" style="'+(toLeft ? 'right:'+(100-l+0.6)+'%' : 'left:'+(l+w+0.6)+'%')+'">'+lab+'</span>';
+    }
     h.push('<div class="gtrow"><div class="nm">'+esc(t.name)+'</div><div class="tr">'
       + '<div class="bar k-'+t.color+'" data-k="g|'+t.id+'" title="'+esc(t.name+'　'+t.startDate+' → '+t.endDate+'　'+(t.note||''))+'" '
       + 'style="left:'+l+'%;width:'+w+'%;background:'+getVar(t.color)+'">'
-      + (clipL?'← ':'') + esc(t.note||'') + (clipR?' →':'') + '</div>'
+      + (clipL?'← ':'') + (inBar ? lab + (clipR?' →':'') : '') + '</div>'
+      + out
       + (inR?'<div class="gtline" style="left:'+tl+'%"></div>':'')
       + '</div></div>');
   });
