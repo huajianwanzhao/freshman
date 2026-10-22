@@ -77,7 +77,8 @@ window.DATA = {
     { id:"t11", name:"高代期中", startDate:"2026-11-22", endDate:"2026-11-22", color:"fixed", hard:true, note:"11/22 周日，考完这学期最难的一段结束" },
     { id:"t07", name:"美术 90 天", startDate:"2026-10-19", endDate:"2027-01-16", color:"art", note:"每天 15–30 分钟，不断" },
     { id:"t08", name:"英语四级", startDate:"2026-12-19", endDate:"2026-12-19", color:"fixed", note:"以官方通知为准" },
-    { id:"t09", name:"期末周", startDate:"2027-01-11", endDate:"2027-01-17", color:"fixed", note:"占位，等教务通知" }
+    { id:"t09", name:"期末周", startDate:"2027-01-11", endDate:"2027-01-17", color:"fixed", note:"占位，等教务通知" },
+    { id:"t12", name:"跑步 4 周", startDate:"2026-10-22", endDate:"2026-11-19", color:"sport", note:"每周 3 次 20 分钟：降速加时长，1km 6'30\" → 目标 5'40\"" }
   ],
 
   /* ── 美术 90 天：每天到底画什么（date, 序号, 标题, 分钟, 步骤[], 检查点） ── */
