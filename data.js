@@ -91,7 +91,7 @@ window.DATA = {
     { id:"t08", name:"英语四级", startDate:"2026-12-19", endDate:"2026-12-19", color:"fixed", note:"以官方通知为准" },
     { id:"t09", name:"期末周", startDate:"2027-01-11", endDate:"2027-01-17", color:"fixed", note:"占位，等教务通知" },
     { id:"t12", name:"跑步 4 周", startDate:"2026-10-22", endDate:"2026-11-19", color:"sport", note:"每周 3 次 20 分钟：降速加时长，1km 6'30\" → 目标 5'40\"" },
-    { id:"t13", name:"体测（已考）", startDate:"2026-11-02", endDate:"2026-11-08", color:"fixed", hard:true, note:"1000 米 4'52\"（50 分）、引体 8 个（40 分）" }
+    { id:"t13", name:"体测（已考）", startDate:"2026-11-02", endDate:"2026-11-08", color:"fixed", hard:true, note:"总分 74.0 及格（1000 米 4'52\"、引体 8 个）；离良好差 6 分" }
   ],
 
   /* ── 美术 90 天：每天到底画什么（date, 序号, 标题, 分钟, 步骤[], 检查点） ── */
