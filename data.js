@@ -80,7 +80,7 @@ window.DATA = {
   /* ── 跨天任务（甘特图的行） ── */
   tracks: [
     { id:"t01", name:"Godot 备赛", startDate:"2026-10-19", endDate:"2026-10-27", color:"study", note:"9 天，每天 1 小时" },
-    { id:"t02", name:"Game Jam", startDate:"2026-10-28", endDate:"2026-11-11", color:"jam", hard:true, note:"必须提交一个能玩的版本" },
+    { id:"t02", name:"Game Jam（已完成）", startDate:"2026-10-28", endDate:"2026-11-11", color:"jam", hard:true, note:"11/11 已提交" },
     { id:"t03", name:"数分冲刺", startDate:"2026-10-26", endDate:"2026-11-14", color:"study", note:"极限、连续、导数、中值定理；11/15 考" },
     { id:"t04", name:"高代冲刺", startDate:"2026-11-09", endDate:"2026-11-21", color:"study", note:"行列式、矩阵、线性方程组；11/22 考" },
     { id:"t10", name:"社发史期末", startDate:"2026-11-02", endDate:"2026-11-08", color:"fixed", hard:true, note:"第 9 周结课考试，具体日期待老师通知" },
@@ -91,7 +91,7 @@ window.DATA = {
     { id:"t08", name:"英语四级", startDate:"2026-12-19", endDate:"2026-12-19", color:"fixed", note:"以官方通知为准" },
     { id:"t09", name:"期末周", startDate:"2027-01-11", endDate:"2027-01-17", color:"fixed", note:"占位，等教务通知" },
     { id:"t12", name:"跑步 4 周", startDate:"2026-10-22", endDate:"2026-11-19", color:"sport", note:"每周 3 次 20 分钟：降速加时长，1km 6'30\" → 目标 5'40\"" },
-    { id:"t13", name:"体测（11/2–11/8 那周）", startDate:"2026-11-02", endDate:"2026-11-08", color:"fixed", hard:true, note:"具体哪天等通知；那天 Jam 停手" }
+    { id:"t13", name:"体测（已考）", startDate:"2026-11-02", endDate:"2026-11-08", color:"fixed", hard:true, note:"1000 米 4'52\"（50 分）、引体 8 个（40 分）" }
   ],
 
   /* ── 美术 90 天：每天到底画什么（date, 序号, 标题, 分钟, 步骤[], 检查点） ── */
